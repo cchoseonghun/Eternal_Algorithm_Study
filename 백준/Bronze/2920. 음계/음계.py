@@ -1,11 +1,15 @@
-arr = ['None', 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C']
+import sys
+up, down = True, True
+arr = list(map(int, sys.stdin.readline().split()))
+for i in range(1, len(arr)):
+  if arr[i] > arr[i-1]:
+    down = False
+  else:
+    up = False
 
-str = ''
-for i in list(map(int, input().split())):
-  str += arr[i]
-if str == 'cdefgabC':
+if up:
   print('ascending')
-elif str == 'Cbagfedc':
+elif down:
   print('descending')
 else:
   print('mixed')
