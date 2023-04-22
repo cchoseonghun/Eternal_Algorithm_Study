@@ -7,8 +7,7 @@ def solution():
 
   count = 0
   while True:
-    max_value = sorted(queue, key=lambda x: x[1], reverse=True)[0]
-    if max_value == queue[0]:
+    if max(queue, key=lambda x: x[1]) == queue[0]:
       count += 1
       if queue.pop(0)[0] == M:
         print(count)
