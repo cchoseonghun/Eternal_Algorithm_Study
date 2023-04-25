@@ -1,6 +1,7 @@
 import heapq
 
 def dijkstra(start):
+  distances = [float('inf')] * (n+1)
   distances[start] = 0
   queue = []
   heapq.heappush(queue, (0, start))
@@ -17,20 +18,21 @@ def dijkstra(start):
         distances[n_node] = distance
         heapq.heappush(queue, (distance, n_node))
 
+  return distances
+
 for _ in range(int(input())):
   n, d, start = map(int, input().split())
   graph = [[] for _ in range(n+1)]
-  distances = [float('inf')] * (n+1)
 
   for _ in range(d):
     a, b, s = map(int, input().split())
     graph[b].append((a, s))
 
-  dijkstra(start)
+  result = dijkstra(start)
 
   count = 0
   max_distance = 0
-  for i in distances:
+  for i in result:
     if i != float('inf'):
       count += 1
       max_distance = max(max_distance, i)
