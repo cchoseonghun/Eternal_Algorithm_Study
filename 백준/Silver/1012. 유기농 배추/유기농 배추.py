@@ -1,32 +1,28 @@
 import sys
 sys.setrecursionlimit(100000)
 
+def dfs(x, y):
+  visited[x][y] = True
+  directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+  for dx, dy in directions:
+    nx, ny = x + dx, y + dy
+    if nx < 0 or nx >= N or ny < 0 or ny >= M:
+      continue
+    if field[nx][ny] and not visited[nx][ny]:
+      dfs(nx, ny)
+
 for _ in range(int(input())):
   M, N, K = map(int, input().split())
-  # M: 배추밭 가로 길이 (1 <= M <= 50)
-  # M: 배추밭 가로 길이 (1 <= M <= 50)
-  # K: 배추 개수 (1 <= M <= 2500)
   field = [[0] * M for _ in range(N)]
+  visited = [[False] * M for _ in range(N)]
   for _ in range(K):
-    x, y = map(int, input().split())
-    field[y][x] = 1
+    y, x = map(int, input().split())
+    field[x][y] = 1
 
-  def dfs(y, x):
-    if x < 0 or x >= M or y < 0 or y >= N:
-      return False
-    if field[y][x] == 1:
-      field[y][x] = 0
-      dfs(y+1, x)
-      dfs(y, x+1)
-      dfs(y-1, x)
-      dfs(y, x-1)
-      return True
-    else:
-      return False
-
-  count = 0
-  for y in range(N):
-    for x in range(M):
-      if dfs(y, x):
-        count += 1
-  print(count)
+  result = 0
+  for x in range(N):
+    for y in range(M):
+      if field[x][y] and not visited[x][y]:
+        dfs(x, y)
+        result += 1
+  print(result)
