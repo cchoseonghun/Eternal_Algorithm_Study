@@ -8,32 +8,28 @@ def dijkstra(start):
 
   while queue:
     curr_distance, curr_node = heapq.heappop(queue)
-
     if distances[curr_node] < curr_distance:
       continue
-
-    for n_node, n_distance in graph[curr_node]:
+    for n_distance, n_node in graph[curr_node]:
       distance = curr_distance + n_distance
-      if distances[n_node] > distance:
+      if distance < distances[n_node]:
         distances[n_node] = distance
         heapq.heappush(queue, (distance, n_node))
-
   return distances
 
 for _ in range(int(input())):
-  n, d, start = map(int, input().split())
+  n, d, c = map(int, input().split())
   graph = [[] for _ in range(n+1)]
-
   for _ in range(d):
     a, b, s = map(int, input().split())
-    graph[b].append((a, s))
-
-  result = dijkstra(start)
+    graph[b].append((s, a))  # (distance, node)
+  
+  result = dijkstra(c)
 
   count = 0
   max_distance = 0
-  for i in result:
-    if i != float('inf'):
+  for x in result:
+    if x != float('inf'):
       count += 1
-      max_distance = max(max_distance, i)
+      max_distance = max(max_distance, x)
   print(count, max_distance)
