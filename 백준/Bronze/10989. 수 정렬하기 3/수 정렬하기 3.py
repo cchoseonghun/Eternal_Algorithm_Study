@@ -1,11 +1,10 @@
 import sys
-input = sys.stdin.readline
-print = sys.stdout.write
+N = int(sys.stdin.readline())
 
-arr = [0] * 10001
-for _ in range(int(input())):
-  arr[int(input())] += 1
+nums = [0]*10001
+for _ in range(N):
+  nums[int(sys.stdin.readline())] += 1
 
-for i, x in enumerate(arr):
-  for _ in range(x):
-    print(str(i)+'\n')
+for idx in range(1,10001):
+  for _ in range(nums[idx]):
+      sys.stdout.write(str(idx)+'\n')
