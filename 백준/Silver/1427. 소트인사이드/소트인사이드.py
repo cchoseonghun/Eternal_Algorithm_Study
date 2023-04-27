@@ -1,4 +1,5 @@
-N = [int(x) for x in input()]
-N.sort(reverse=True)
-for x in N:
-  print(x, end='')
+N = input()
+for i in range(9, -1, -1):
+  for j in N:
+    if int(j) == i:
+      print(i, end='')
