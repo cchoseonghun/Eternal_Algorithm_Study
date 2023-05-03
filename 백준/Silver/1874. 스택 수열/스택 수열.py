@@ -1,27 +1,17 @@
-# 출력: push, pop 연산을 출력. push: +, pop: -
-# 조건을 만족할 수 없을 시 'NO' 출력
-
-# 조건:
-# 첫째줄 n (1 ≤ n ≤ 100,000)
-# 1 <= arr[i] <= n
-
-n = int(input())
-
-count = 1
-stack = []
+counting = 1
+arr = []
 result = []
-
-for _ in range(n):
-  data = int(input())
-  while count <= data:
-    stack.append(count)
-    count += 1
+for _ in range(int(input())):
+  k = int(input())
+  while counting <= k:
+    arr.append(counting)
     result.append('+')
-  if stack[-1] == data:
-    stack.pop()
+    counting += 1
+  if arr[-1] == k:
+    arr.pop()
     result.append('-')
   else:
     print('NO')
-    exit(0)
-
-print('\n'.join(result))
+    exit()
+for x in result:
+  print(x)
