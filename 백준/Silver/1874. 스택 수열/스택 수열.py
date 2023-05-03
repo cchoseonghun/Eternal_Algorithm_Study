@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 counting = 1
 arr = []
 result = []
