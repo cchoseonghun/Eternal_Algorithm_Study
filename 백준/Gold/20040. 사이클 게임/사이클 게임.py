@@ -2,39 +2,31 @@ import sys
 input = sys.stdin.readline
 
 def find(x):
-  if x != parent[x]:
+  if parent[x] != x:
     parent[x] = find(parent[x])
   return parent[x]
 
 def union(x, y):
   x = find(x)
   y = find(y)
-  if x == y:
-    return True
+  if x < y:
+    parent[y] = x
   else:
-    if rank[x] < rank[y]:
-      parent[x] = y
-    else:
-      parent[y] = x
-      if rank[x] == rank[y]:
-        rank[x] += 1
-    return False
-
-def make_set(x):
-  if x not in parent:
-    parent[x] = x
-    rank[x] = 0
+    parent[x] = y
 
 n, m = map(int, input().split())
-parent, rank = {}, {}
-count = 1
-for _ in range(m):
+parent = [0] * n
+for i in range(n):
+  parent[i] = i
+
+cycle = False
+for i in range(m):
   x, y = map(int, input().split())
-  make_set(x)
-  make_set(y)
-  if union(x, y):
-    print(count)
-    exit()
+  if find(x) == find(y):
+    cycle = True
+    print(i + 1)
+    break
   else:
-    count += 1
-print(0)
+    union(x, y)
+if not cycle:
+  print(0)
