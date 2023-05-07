@@ -1,5 +1,5 @@
 def find(x):
-  if parent[x] != x:
+  if x != parent[x]:
     parent[x] = find(parent[x])
   return parent[x]
 
@@ -20,5 +20,4 @@ for _ in range(int(input())):
       parent[y] = y
       count[y] = 1
     union(x, y)
-
     print(count[find(x)])
