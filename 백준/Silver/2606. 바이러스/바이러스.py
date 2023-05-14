@@ -1,18 +1,10 @@
-from collections import deque
-
-def BFS(start):
-  visited = [False] * (C+1)
-  visited[start] = True
-  queue = deque([start])
-  count = -1
-  while queue:
-    v = queue.popleft()
-    count += 1
-    for i in graph[v]:
-      if not visited[i]:
-        queue.append(i)
-        visited[i] = True
-  return count
+def DFS(v, visited):
+  global x
+  visited[v] = True
+  x += 1
+  for i in graph[v]:
+    if not visited[i]:
+      DFS(i, visited)
 
 C = int(input())
 N = int(input())
@@ -22,4 +14,7 @@ for _ in range(N):
   graph[x].append(y)
   graph[y].append(x)
 
-print(BFS(1))
+x = -1
+visited = [False] * (C+1)
+DFS(1, visited)
+print(x)
