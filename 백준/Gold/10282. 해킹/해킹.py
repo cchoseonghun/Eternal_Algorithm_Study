@@ -1,35 +1,41 @@
 import heapq
-
-def dijkstra(start):
-  distances = [float('inf')] * (n+1)
-  distances[start] = 0
-  queue = []
-  heapq.heappush(queue, (0, start))
-
-  while queue:
-    curr_distance, curr_node = heapq.heappop(queue)
-    if distances[curr_node] < curr_distance:
-      continue
-    for n_distance, n_node in graph[curr_node]:
-      distance = curr_distance + n_distance
-      if distance < distances[n_node]:
-        distances[n_node] = distance
-        heapq.heappush(queue, (distance, n_node))
-  return distances
+from collections import defaultdict
+import sys
+input = sys.stdin.readline
 
 for _ in range(int(input())):
-  n, d, c = map(int, input().split())
-  graph = [[] for _ in range(n+1)]
-  for _ in range(d):
+  N, D, C = map(int, input().split())
+  graph = defaultdict(list)
+  d = {}
+  for _ in range(D):
     a, b, s = map(int, input().split())
-    graph[b].append((s, a))  # (distance, node)
-  
-  result = dijkstra(c)
+    if b not in graph:
+      graph[b] = [(s, a)]
+    else:
+      graph[b].append((s, a))
+
+    if a not in d:
+      d[a] = 1e9
+    if b not in d:
+      d[b] = 1e9
+  d[C] = 0
+
+  queue = []
+  heapq.heappush(queue, (0, C))
+  while queue:
+    curr_d, curr_n = heapq.heappop(queue)
+    if d[curr_n] < curr_d:
+      continue
+    for next_d, next_n in graph[curr_n]:
+      new_d = curr_d + next_d
+      if new_d < d[next_n]:
+        d[next_n] = new_d
+        heapq.heappush(queue, (new_d, next_n))
 
   count = 0
-  max_distance = 0
-  for x in result:
-    if x != float('inf'):
+  m = 0
+  for _, distance in d.items():
+    if distance != 1e9:
       count += 1
-      max_distance = max(max_distance, x)
-  print(count, max_distance)
+      m = max(m, distance)
+  print(count, m)
