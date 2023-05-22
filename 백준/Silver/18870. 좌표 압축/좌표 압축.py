@@ -1,9 +1,12 @@
+import sys
+input = sys.stdin.readline
+
 N = int(input())
 arr = list(map(int, input().split()))
 unique = list(set(arr))
 unique.sort()
-target = {}
+result = {}
 for i, x in enumerate(unique):
-  target[x] = i
+  result[x] = i
 for x in arr:
-  print(target[x], end=' ')
+  print(result[x], end=' ')
