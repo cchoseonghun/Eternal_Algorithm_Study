@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 def DFS(x, y):
   result = 1
   board[x][y] = 0
@@ -12,10 +15,11 @@ dx = [0, 0, 1, -1]
 dy = [1, -1, 0, 0]
 
 N = int(input())
-board = []
-for _ in range(N):
-  arr = [int(x) for x in input()]
-  board.append(arr)
+board = [[0] * N for _ in range(N)]
+for i in range(N):
+  row = input()
+  for j in range(N):
+    board[i][j] = int(row[j])
 
 result = []
 for i in range(N):
