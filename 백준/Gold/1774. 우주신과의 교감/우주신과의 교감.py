@@ -1,11 +1,8 @@
-import math
 import sys
 input = sys.stdin.readline
 
-def get_distance(p1, p2):
-  a = p1[0] - p2[0]
-  b = p1[1] - p2[1]
-  return math.sqrt((a * a) + (b * b))
+def get_distance(a, b):
+  return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
 def get_parent(parent, n):
   if parent[n] != n:
