@@ -1,55 +1,53 @@
-from collections import deque
-import heapq
 import sys
 input = sys.stdin.readline
+import heapq
+from collections import deque
 
-def dijkstra():
-  queue = []
-  heapq.heappush(queue, (0, S))
+def daijkstra():
   distances[S] = 0
-  while queue:
-    curr_d, curr_n = heapq.heappop(queue)
+  heap = []
+  heapq.heappush(heap, (0, S))
+  while heap:
+    curr_d, curr_n = heapq.heappop(heap)
     if distances[curr_n] < curr_d:
       continue
     for next_d, next_n in graph[curr_n]:
       new_d = curr_d + next_d
-      if new_d < distances[next_n] and not dropped[curr_n][next_n]:
+      if new_d < distances[next_n] and not visited[curr_n][next_n]:
         distances[next_n] = new_d
-        heapq.heappush(queue, (new_d, next_n))
+        heapq.heappush(heap, (new_d, next_n))
 
 def BFS():
   queue = deque([D])
   while queue:
-    now = queue.popleft()
-    if now == S:
-      continue
-    for cost, prev in reverse_graph[now]:
-      if distances[now] == distances[prev] + cost and not dropped[prev][now]:
-        dropped[prev][now] = True
-        queue.append(prev)
-
+    curr_n = queue.popleft()
+    for prev_d, prev_n in r_graph[curr_n]:
+      if distances[curr_n] == distances[prev_n] + prev_d and not visited[prev_n][curr_n]:
+        visited[prev_n][curr_n] = True
+        queue.append(prev_n)
+        
 while True:
   N, M = map(int, input().split())
   if N == 0 and M == 0:
-    break
-  graph = [[] for _ in range(N)]
-  reverse_graph = [[] for _ in range(N)]
-
+    exit()
   S, D = map(int, input().split())
+  graph = [[] for _ in range(N)]
+  r_graph = [[] for _ in range(N)]
+  visited = [[False] * N for _ in range(N)]
+  distances = [1e9] * N
+
   for _ in range(M):
     U, V, P = map(int, input().split())
     graph[U].append((P, V))
-    reverse_graph[V].append((P, U))
+    r_graph[V].append((P, U))
 
-  dropped = [[False] * N for _ in range(N)]
-  distances = [1e9] * N
-  dijkstra()
+  daijkstra()
   BFS()
+  distances = [1e9] * N
+  daijkstra()
 
-  distances = [1e9] * (N)
-  dijkstra()
-
-  if distances[D] != 1e9:
-    print(distances[D])
-  else:
+  result = distances[D]
+  if result == 1e9:
     print(-1)
+  else:
+    print(result)
