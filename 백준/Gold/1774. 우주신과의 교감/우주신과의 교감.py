@@ -1,60 +1,61 @@
-import heapq
+import math
 import sys
 input = sys.stdin.readline
 
-def get_distance(a, b):
-  return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+def get_distance(p1, p2):
+  a = p1[0] - p2[0]
+  b = p1[1] - p2[1]
+  return math.sqrt((a * a) + (b * b))
 
-def find(x):
-  if parent[x] != x:
-    parent[x] = find(parent[x])
-  return parent[x]
+def get_parent(parent, n):
+  if parent[n] != n:
+    parent[n] = get_parent(parent, parent[n])
+  return parent[n]
 
-def union(x, y):
-  x = find(x)
-  y = find(y)
-  if x != y:
-    if rank[x] < rank[y]:
-      parent[x] = y
-    else:
-      parent[y] = x
-      if rank[x] == rank[y]:
-        rank[x] += 1
+def union(parent, a, b):
+  a = get_parent(parent, a)
+  b = get_parent(parent, b)
+  if a < b:
+    parent[b] = a
+  else:
+    parent[a] = b
+
+def find(parent, a, b):
+  a = get_parent(parent, a)
+  b = get_parent(parent, b)
+  if a == b:
     return True
-  return False
-
-def make_set(x):
-  parent[x] = x
-  rank[x] = 0
-
-def dijkstra(edges):
-  mst = []
-  while edges:
-    edge = heapq.heappop(edges)
-    _, (x, y) = edge
-    if union(x, y):
-      mst.append(edge)
-  return mst
-
-N, M = map(int, input().split())
+  else:
+    return False
+  
 edges = []
-locations = []
 parent = {}
-rank = {}
+locations = []
+N, M = map(int, input().split())
+
 for _ in range(N):
   x, y = map(int, input().split())
   locations.append((x, y))
-for i in range(1, N + 1):
-  for j in range(i + 1, N + 1):
-    heapq.heappush(edges, (get_distance(locations[i-1], locations[j-1]), (i, j)))
-    make_set(i)
-    make_set(j)
-for _ in range(M):
-  x, y = map(int, input().split())
-  union(x, y)
 
-result = dijkstra(edges)
-s = 0
-for x, _ in result:
-  s += x
-print("%0.2f" % s)
+length = len(locations)
+
+for i in range(length - 1):
+  for j in range(i + 1, length):
+    edges.append((i + 1, j + 1, get_distance(locations[i], locations[j])))
+
+for i in range(1, N + 1):
+  parent[i] = i
+
+for i in range(M):
+  a, b = map(int, input().split())
+  union(parent, a, b)
+
+edges.sort(key=lambda data: data[2])
+
+result = 0
+for a, b, cost in edges:
+  if not find(parent, a, b):
+    union(parent, a, b)
+    result += cost
+
+print('%0.2f'%result)
