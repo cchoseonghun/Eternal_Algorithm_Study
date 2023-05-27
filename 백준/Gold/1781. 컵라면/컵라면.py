@@ -4,14 +4,15 @@ import heapq
 
 N = int(input())
 arr = []
-for i in range(N):
+for _ in range(N):
   d, c = map(int, input().split())
   arr.append((d, c))
 arr.sort()
 
-result = []
+heap = []
 for d, c in arr:
-  heapq.heappush(result, c)
-  if d < len(result):
-    heapq.heappop(result)
-print(sum(result))
+  heapq.heappush(heap, c)
+  while len(heap) > d:
+    heapq.heappop(heap)
+
+print(sum(heap))
