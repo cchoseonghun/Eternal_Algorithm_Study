@@ -6,8 +6,7 @@ for _ in range(int(input())):
   arr = list(map(int, input().split()))
   arr.sort()
 
-  M = 0
+  m = 0
   for i in range(N - 2):
-    L = abs(arr[i] - arr[i + 2])
-    M = max(M, L)
-  print(M)
+    m = max(m, arr[i + 2] - arr[i])
+  print(m)
