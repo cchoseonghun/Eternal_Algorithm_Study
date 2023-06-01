@@ -1,14 +1,16 @@
-from collections import deque
+import sys
+sys.setrecursionlimit(100000)
+
+def DFS(L, curr, target, numbers):
+    result = 0
+    if L == len(numbers):
+        if curr == target:
+            result += 1
+        return result
+    result += DFS(L + 1, curr + numbers[L], target, numbers)
+    result += DFS(L + 1, curr - numbers[L], target, numbers)
+    return result
 
 def solution(numbers, target):
-    answer = 0
-    stack = deque([(0, 0)])
-    while stack:
-        sum, index = stack.pop()
-        if index == len(numbers):
-            if sum == target:
-                answer += 1
-        else:
-            stack.append((sum + numbers[index], index + 1))
-            stack.append((sum - numbers[index], index + 1))
-    return answer
+    return DFS(0, 0, target, numbers)
+    
