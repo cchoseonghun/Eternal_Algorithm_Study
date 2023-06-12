@@ -5,21 +5,20 @@ import heapq
 N = int(input())
 arr = []
 for _ in range(N):
-  _, start, end = map(int, input().split())
-  heapq.heappush(arr, (start, end))
+  _, S, E = map(int, input().split())
+  arr.append((S, E))
+arr.sort(key=lambda x: x[0])
 
-heap = []
-end = heapq.heappop(arr)[1]
-heapq.heappush(heap, end)
+classes = []
+heapq.heappush(classes, arr[0][1])
 
-while arr:
-  new_start, new_end = heapq.heappop(arr)
-  end = heapq.heappop(heap)
-
-  if new_start < end:
-    heapq.heappush(heap, end)
-    heapq.heappush(heap, new_end)
+for i in range(1, N):
+  S, E = arr[i]
+  target = heapq.heappop(classes)
+  if target <= S:
+    heapq.heappush(classes, E)
   else:
-    heapq.heappush(heap, new_end)
+    heapq.heappush(classes, E)
+    heapq.heappush(classes, target)
 
-print(len(heap))
+print(len(classes))
