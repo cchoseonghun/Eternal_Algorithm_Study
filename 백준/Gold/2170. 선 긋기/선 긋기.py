@@ -1,23 +1,23 @@
 import sys
 input = sys.stdin.readline
+import heapq
 
 N = int(input())
-arr = []
+heap = []
+
 for _ in range(N):
   x, y = map(int, input().split())
-  arr.append((x, y))
-arr.sort()
+  heapq.heappush(heap, (x, y))
 
+start, end = heapq.heappop(heap)
 result = 0
-start, current = arr[0]
-for line in arr:
-  x, y = line
-  if x <= current:
-    current = max(current, y)
+while heap:
+  x, y = heapq.heappop(heap)
+  if x <= end:
+    end = max(end, y)
   else:
-    result += current - start
+    result += end - start
     start = x
-    current = y
-result += current - start
-
+    end = y
+result += end - start
 print(result)
